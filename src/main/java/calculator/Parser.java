@@ -4,9 +4,18 @@ public class Parser {
 
     public static int parse(final String s) {
         try {
-            return Integer.parseInt(s);
+            int number = Integer.parseInt(s);
+            validatePositiveNumber(number);
+
+            return number;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("숫자로 변환할 수 없는 값이 입력되었습니다.");
+            throw new IllegalArgumentException("숫자만 입력해주세요.");
+        }
+    }
+
+    private static void validatePositiveNumber(final int number) {
+        if (number < 0) {
+            throw new IllegalArgumentException("양수를 입력해주세요.");
         }
     }
 }

@@ -5,23 +5,33 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class ParserTest {
 
     @Test
     @DisplayName("문자열을 숫자로 변환한다.")
     void shouldParseNumber_whenString() {
-        int result = Parser.parse("1");
+        assertEquals(1, Parser.parse("1"));
+    }
 
-        assertEquals(1, result);
+    @ParameterizedTest
+    @DisplayName("문자열을 정수로 변환할 수 없는 경우 예외가 발생한다.")
+    @ValueSource(strings = {"a", " "})
+    void shouldThrowException_whenInvalidNumber(String input) {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> Parser.parse(input));
+
+        assertEquals("숫자만 입력해주세요.", exception.getMessage());
     }
 
     @Test
-    @DisplayName("문자열을 숫자로 변환할 수 없는 경우 예외가 발생한다.")
-    void shouldThrowsException_whenNotNumber() {
+    @DisplayName("음수가 입력된 경우 예외가 발생한다.")
+    void shouldThrowException_whenNegativeNumber() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> Parser.parse("a"));
+                () -> Parser.parse("-1"));
 
-        assertEquals("숫자로 변환할 수 없는 값이 입력되었습니다.", exception.getMessage());
+        assertEquals("양수를 입력해주세요.", exception.getMessage());
     }
 }
