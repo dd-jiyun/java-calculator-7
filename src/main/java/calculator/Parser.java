@@ -1,16 +1,27 @@
 package calculator;
 
+import java.util.List;
+
 public class Parser {
 
-    public static int parse(final String s) {
+    public static List<Integer> parse(final List<String> input) {
         try {
-            int number = Integer.parseInt(s);
-            validatePositiveNumber(number);
+            List<Integer> numbers = getNumbers(input);
+            for (int number : numbers) {
+                validatePositiveNumber(number);
+            }
 
-            return number;
+            return numbers;
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("숫자만 입력해주세요.");
         }
+    }
+
+    private static List<Integer> getNumbers(final List<String> input) {
+        return input.stream()
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .toList();
     }
 
     private static void validatePositiveNumber(final int number) {
