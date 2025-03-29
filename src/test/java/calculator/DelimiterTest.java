@@ -14,15 +14,26 @@ class DelimiterTest {
     @ValueSource(strings = {",", ":"})
     void shouldReturnTrue_whenValidDelimiter(String delimiter) {
         assertTrue(Delimiter.isValidDelimiter(delimiter));
-        assertTrue(Delimiter.isValidDelimiter(delimiter));
     }
 
     @ParameterizedTest
     @DisplayName("명시된 구분자와 일치하는 구분자가 아니라면 false를 반환한다.")
-    @ValueSource(strings = {" ", ";", "a"})
+    @ValueSource(strings = {";", "a", "@"})
     void shouldReturnFalse_whenInvalidDelimiter(String delimiter) {
         assertFalse(Delimiter.isValidDelimiter(delimiter));
-        assertFalse(Delimiter.isValidDelimiter(delimiter));
-        assertFalse(Delimiter.isValidDelimiter(delimiter));
+    }
+
+    @ParameterizedTest
+    @DisplayName("커스텀 구분자로 사용할 수 있는 구분자일 경우 true를 반환한다.")
+    @ValueSource(strings = {";", "#", "@", "a", "*"})
+    void shouldReturnTrue_whenValidCustomDelimiter(String delimiter) {
+        assertTrue(Delimiter.isValidCustomDelimiter(delimiter));
+    }
+
+    @ParameterizedTest
+    @DisplayName("커스텀 구분자로 사용할 수 없는 구분자일 경우 false를 반환한다.")
+    @ValueSource(strings = {",", ":", " ", "1", "2"})
+    void shouldReturnFalse_whenInvalidCustomDelimiter(String delimiter) {
+        assertFalse(Delimiter.isValidCustomDelimiter(delimiter));
     }
 }
