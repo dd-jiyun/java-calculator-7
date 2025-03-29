@@ -1,5 +1,8 @@
 package calculator;
 
+import static calculator.CustomDelimiterFormat.CUSTOM_DELIMITER_PREFIX;
+import static calculator.CustomDelimiterFormat.CUSTOM_DELIMITER_SUFFIX;
+
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,10 +10,30 @@ import java.util.Set;
 public class DelimiterExtractor {
 
     public List<String> extract(final String input) {
+        if (isCustomDelimiterFormat(input)) {
+            return extractCustomDelimiters(input);
+        }
+
+        return extractDefaultDelimiters(input);
+    }
+
+    private boolean isCustomDelimiterFormat(String input) {
+        return input.startsWith(CUSTOM_DELIMITER_PREFIX) && input.contains(CUSTOM_DELIMITER_SUFFIX);
+    }
+
+    private List<String> extractCustomDelimiters(String input) {
+        List<String> delimiters = List.of(
+                input.substring(CUSTOM_DELIMITER_PREFIX.length(), input.indexOf(CUSTOM_DELIMITER_SUFFIX)));
+        validateAllCustomDelimiter(delimiters);
+
+        return delimiters;
+    }
+
+    private List<String> extractDefaultDelimiters(String input) {
         Set<String> delimiterSet = getDelimiterSet(input);
         List<String> delimiters = List.copyOf(delimiterSet);
+        validateAllDefaultDelimiter(delimiters);
 
-        validateDefaultDelimiters(delimiters);
         return delimiters;
     }
 
@@ -24,12 +47,6 @@ public class DelimiterExtractor {
         return delimiterSet;
     }
 
-    private void validateDefaultDelimiters(final List<String> delimiters) {
-        for (String delimiter : delimiters) {
-            validateDelimiter(delimiter);
-        }
-    }
-
     private void processCharacter(char c, Set<String> delimiterSet) {
         if (Character.isDigit(c)) {
             return;
@@ -37,7 +54,25 @@ public class DelimiterExtractor {
         delimiterSet.add(String.valueOf(c));
     }
 
-    private void validateDelimiter(final String delimiter) {
+    private void validateAllCustomDelimiter(List<String> delimiters) {
+        for (String delimiter : delimiters) {
+            validateCustomDelimiter(delimiter);
+        }
+    }
+
+    private static void validateCustomDelimiter(final String delimiter) {
+        if (!Delimiter.isValidCustomDelimiter(delimiter)) {
+            throw new IllegalArgumentException("사용 가능한 커스텀 구분자를 입력해주세요.");
+        }
+    }
+
+    private void validateAllDefaultDelimiter(final List<String> delimiters) {
+        for (String delimiter : delimiters) {
+            validateDefaultDelimiter(delimiter);
+        }
+    }
+
+    private void validateDefaultDelimiter(final String delimiter) {
         if (!Delimiter.isValidDelimiter(delimiter)) {
             throw new IllegalArgumentException("기본 구분자(,나 :)를 사용해주세요.");
         }
