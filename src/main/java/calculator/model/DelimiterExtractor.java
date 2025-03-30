@@ -1,7 +1,7 @@
-package calculator;
+package calculator.model;
 
-import static calculator.CustomDelimiterFormat.CUSTOM_DELIMITER_PREFIX;
-import static calculator.CustomDelimiterFormat.CUSTOM_DELIMITER_SUFFIX;
+import static calculator.model.CustomDelimiterFormat.CUSTOM_DELIMITER_PREFIX;
+import static calculator.model.CustomDelimiterFormat.CUSTOM_DELIMITER_SUFFIX;
 
 import java.util.LinkedHashSet;
 import java.util.List;

@@ -3,6 +3,7 @@ package calculator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import calculator.model.Calculator;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

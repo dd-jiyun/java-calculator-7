@@ -1,7 +1,7 @@
-package calculator;
+package calculator.model;
 
-import static calculator.CustomDelimiterFormat.CUSTOM_DELIMITER_PREFIX;
-import static calculator.CustomDelimiterFormat.CUSTOM_DELIMITER_SUFFIX;
+import static calculator.model.CustomDelimiterFormat.CUSTOM_DELIMITER_PREFIX;
+import static calculator.model.CustomDelimiterFormat.CUSTOM_DELIMITER_SUFFIX;
 
 import java.util.List;
 import java.util.regex.Pattern;
