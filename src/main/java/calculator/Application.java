@@ -7,7 +7,6 @@ import calculator.model.StringSplitter;
 
 public class Application {
     public static void main(String[] args) {
-
         CalculatorController calculatorController = new CalculatorController(
                 new DelimiterExtractor(),
                 new StringSplitter(),

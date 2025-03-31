@@ -1,7 +1,6 @@
 package calculator.model;
 
-import static calculator.model.CustomDelimiterFormat.CUSTOM_DELIMITER_PREFIX;
-import static calculator.model.CustomDelimiterFormat.CUSTOM_DELIMITER_SUFFIX;
+import static calculator.model.DelimiterConstants.CUSTOM_DELIMITER_SUFFIX;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -19,7 +18,7 @@ public class StringSplitter {
     }
 
     private String preprocessingCustomDelimiter(String input) {
-        if (input.startsWith(CUSTOM_DELIMITER_PREFIX) && input.contains(CUSTOM_DELIMITER_SUFFIX)) {
+        if (input.contains(CUSTOM_DELIMITER_SUFFIX)) {
             input = input.substring(input.indexOf(CUSTOM_DELIMITER_SUFFIX) + 2);
         }
 

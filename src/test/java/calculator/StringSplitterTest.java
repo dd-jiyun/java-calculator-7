@@ -1,6 +1,6 @@
 package calculator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import calculator.model.DelimiterExtractor;
 import calculator.model.StringSplitter;

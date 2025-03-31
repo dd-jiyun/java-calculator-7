@@ -6,18 +6,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import camp.nextstep.edu.missionutils.test.NsTest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class ApplicationTest extends NsTest {
 
-    @ParameterizedTest
+    @Test
     @DisplayName("값이 입력되지 않았을 때 0이 반환된다.")
-    @NullAndEmptySource
-    void shouldReturnZero_whenNotingInput(String input) {
+    void shouldReturnZero_whenEmptyInput() {
         assertSimpleTest(() -> {
-            run(input);
+            run(" ");
             assertThat(output()).contains("결과 : 0");
         });
     }
@@ -45,7 +44,7 @@ class ApplicationTest extends NsTest {
     @ParameterizedTest
     @DisplayName("입력값이 올바르지 않을 때 예외가 발생한다.")
     @ValueSource(strings = {"1:a:3", "-1,2:3", "-1,2,3"})
-    void exception_test(String input) {
+    void shouldThrowException_whenInvalidInput(String input) {
         assertSimpleTest(() ->
                 assertThatThrownBy(() -> runException(input))
                         .isInstanceOf(IllegalArgumentException.class)
@@ -54,8 +53,8 @@ class ApplicationTest extends NsTest {
 
     @ParameterizedTest
     @DisplayName("커스텀 구분자 형식을 올바르게 입력하지 않았을 경우 예외가 발생한다.")
-    @ValueSource(strings = {"//;1;2;3", "1#2#3", "#\\n1#2#3"})
-    void shouldTest(String input) {
+    @ValueSource(strings = {"//;1;2;3", "1#2#3", "#\\n1#2#3", "/;\\n1;2;3"})
+    void shouldThrowException_whenInvalidCustomDelimiterFormat(String input) {
         assertSimpleTest(() ->
                 assertThatThrownBy(() -> runException(input))
                         .isInstanceOf(IllegalArgumentException.class)

@@ -8,19 +8,14 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 class DelimiterExtractorTest {
 
     @ParameterizedTest
     @DisplayName("문자열에서 기본 구분자를 추출한다.")
-    @CsvSource(value = {
-            "1,2,3 | ,",
-            "1:2:3 | :",
-            "1,2:3 | ,:"
-    }, delimiter = '|')
-    void shouldExtractDelimiter_whenGivenString(String input, String expected) {
+    @ValueSource(strings = {"1,2,3", "1:2:3", "1,2:3"})
+    void shouldExtractDelimiter_whenGivenString(String input) {
         //given
         DelimiterExtractor extractor = new DelimiterExtractor();
 
@@ -28,7 +23,7 @@ class DelimiterExtractorTest {
         List<String> result = extractor.extract(input);
 
         //then
-        assertEquals(List.of(expected.split("")), result);
+        assertEquals(List.of(",", ":"), result);
     }
 
     @ParameterizedTest

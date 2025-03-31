@@ -1,5 +1,8 @@
 package calculator.model;
 
+import static calculator.model.DelimiterConstants.DEFAULT_DELIMITER_REGEX;
+
+import java.util.List;
 import java.util.stream.Stream;
 
 public enum Delimiter {
@@ -8,8 +11,8 @@ public enum Delimiter {
     DOUBLE_SLASH("//", false),
     NEW_LINE("\\n", false),
     NUMBER("[0-9]+", false),
-    SPACE(" ", false)
-    ;
+    SPACE(" ", false);
+
 
     private final String delimiter;
     private final boolean isDefault;
@@ -19,10 +22,15 @@ public enum Delimiter {
         this.isDefault = isDefault;
     }
 
-    public static boolean isValidDelimiter(String delimiter) {
+    public static List<String> getDefaultDelimiter() {
         return Stream.of(values())
-                .filter(d -> d.isDefault)
-                .anyMatch(d -> d.getDelimiter().equals(delimiter));
+                .filter(Delimiter::isDefault)
+                .map(Delimiter::getDelimiter)
+                .toList();
+    }
+
+    public static boolean isValidDelimiter(String input) {
+        return DEFAULT_DELIMITER_REGEX.matcher(input).matches();
     }
 
     public static boolean isValidCustomDelimiter(String delimiter) {
@@ -30,7 +38,11 @@ public enum Delimiter {
                 .noneMatch(d -> d.getDelimiter().equals(delimiter)) && !delimiter.matches(NUMBER.getDelimiter());
     }
 
-    public String getDelimiter() {
+    private String getDelimiter() {
         return delimiter;
+    }
+
+    private boolean isDefault() {
+        return isDefault;
     }
 }
