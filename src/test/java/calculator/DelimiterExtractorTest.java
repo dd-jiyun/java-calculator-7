@@ -41,6 +41,35 @@ class DelimiterExtractorTest {
         assertEquals("기본 구분자(,나 :)를 사용해주세요.", exception.getMessage());
     }
 
+    @ParameterizedTest
+    @DisplayName("커스텀 구분자의 형식이 올바르지 않을 경우 예외가 발생한다.")
+    @ValueSource(strings = {"//;1;2;3", "#\\n1#2#3", "/;\\n1;2;3"})
+    void shouldThrowException_whenInvalidCustomDelimiterFormat(String input) {
+        //given
+        DelimiterExtractor extractor = new DelimiterExtractor();
+
+        //when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> extractor.extract(input));
+
+        //then
+        assertEquals("커스텀 구분자 형식에 맞게 입력해주세요.", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("커스텀 구분자 형식에서 구분자가 비어있을 경우 예외가 발생한다.")
+    void shouldThrowException_whenEmptyCustomDelimiterFormat() {
+        //given
+        DelimiterExtractor extractor = new DelimiterExtractor();
+
+        //when
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> extractor.extract("//\\n1;2;3"));
+
+        //then
+        assertEquals("커스텀 구분자를 입력해주세요.", exception.getMessage());
+    }
+
     @Test
     @DisplayName("문자열에서 커스텀 구분자를 추출한다.")
     void shouldExtractCustomDelimiter_whenGivingString() {

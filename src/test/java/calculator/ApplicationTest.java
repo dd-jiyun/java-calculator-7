@@ -21,6 +21,15 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @Test
+    @DisplayName("올바른 값을 하나만 입력했을 경우 결과가 반환된다.")
+    void shouldReturnValue_whenSingleInput() {
+        assertSimpleTest(() -> {
+            run("3");
+            assertThat(output()).contains("결과 : 3");
+        });
+    }
+
     @ParameterizedTest
     @DisplayName("기본 구분자를 사용하였을 때 정상적으로 결과가 반환된다.")
     @ValueSource(strings = {"1,2:3", "1,2,3", "1:2:3"})
@@ -42,7 +51,7 @@ class ApplicationTest extends NsTest {
     }
 
     @ParameterizedTest
-    @DisplayName("입력값이 올바르지 않을 때 예외가 발생한다.")
+    @DisplayName("기본 구분자를 올바르게 입력하지 않았을 경우 예외가 발생한다.")
     @ValueSource(strings = {"1:a:3", "-1,2:3", "-1,2,3"})
     void shouldThrowException_whenInvalidInput(String input) {
         assertSimpleTest(() ->
@@ -52,8 +61,8 @@ class ApplicationTest extends NsTest {
     }
 
     @ParameterizedTest
-    @DisplayName("커스텀 구분자 형식을 올바르게 입력하지 않았을 경우 예외가 발생한다.")
-    @ValueSource(strings = {"//;1;2;3", "1#2#3", "#\\n1#2#3", "/;\\n1;2;3"})
+    @DisplayName("커스텀 구분자를 올바르게 입력하지 않았을 경우 예외가 발생한다.")
+    @ValueSource(strings = {"//;1;2;3", "#\\n1#2#3", "/;\\n1;2;3", "//\\n1;2;3"})
     void shouldThrowException_whenInvalidCustomDelimiterFormat(String input) {
         assertSimpleTest(() ->
                 assertThatThrownBy(() -> runException(input))

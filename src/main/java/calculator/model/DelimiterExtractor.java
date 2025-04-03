@@ -8,7 +8,8 @@ import java.util.List;
 public class DelimiterExtractor {
 
     public List<String> extract(final String input) {
-        if (isCustomDelimiterFormat(input)) {
+        if (isCheckCustomDelimiterFormat(input)) {
+            validateCustomDelimiterFormat(input);
             return extractCustomDelimiters(input);
         }
 
@@ -16,8 +17,24 @@ public class DelimiterExtractor {
         return Delimiter.getDefaultDelimiter();
     }
 
-    private boolean isCustomDelimiterFormat(String input) {
-        return input.startsWith(CUSTOM_DELIMITER_PREFIX) && input.contains(CUSTOM_DELIMITER_SUFFIX);
+    private boolean isCheckCustomDelimiterFormat(final String input) {
+        return input.startsWith(CUSTOM_DELIMITER_PREFIX) || input.contains(CUSTOM_DELIMITER_SUFFIX);
+    }
+
+    private void validateCustomDelimiterFormat(final String input) {
+        if (!input.startsWith(CUSTOM_DELIMITER_PREFIX) || !input.contains(CUSTOM_DELIMITER_SUFFIX)) {
+            throw new IllegalArgumentException("커스텀 구분자 형식에 맞게 입력해주세요.");
+        }
+        validateEmptyCustomDelimiter(input);
+    }
+
+    private void validateEmptyCustomDelimiter(final String input) {
+        int start = CUSTOM_DELIMITER_PREFIX.length();
+        int end = input.indexOf(CUSTOM_DELIMITER_SUFFIX);
+
+        if (end <= start) {
+            throw new IllegalArgumentException("커스텀 구분자를 입력해주세요.");
+        }
     }
 
     private List<String> extractCustomDelimiters(String input) {
